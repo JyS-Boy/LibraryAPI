@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/deploy/">
+    <File Path="docker-compose.yml" />
+  </Folder>
+  <Folder Name="/src/" />
+  <Folder Name="/src/01. Presentacion/">
+    <Project Path="LibraryAPI/LibraryAPI.csproj" />
+  </Folder>
+  <Folder Name="/src/02. Core/" />
+  <Folder Name="/src/03. Repositories/" />
+  <Folder Name="/src/04. Infraestructure/">
+    <Project Path="Library.DataAccess/Library.DataAccess.csproj" />
+  </Folder>
+  <Folder Name="/src/05. Common/" />
+</Solution>

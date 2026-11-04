@@ -1,0 +1,13 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: libreria_sqlserver
+    restart: always
+    environment:
+      SA_PASSWORD: "Password2026"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Express"
+    ports:
+      - "1501:1433"
+    volumes:
+      - C:\Users\jpalomino\Documents\Docker\Volumenes\api_libreria:/var/opt/mssql/data
