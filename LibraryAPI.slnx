@@ -6,10 +6,16 @@
   <Folder Name="/src/01. Presentacion/">
     <Project Path="LibraryAPI/LibraryAPI.csproj" />
   </Folder>
-  <Folder Name="/src/02. Core/" />
-  <Folder Name="/src/03. Repositories/" />
+  <Folder Name="/src/02. Core/">
+    <Project Path="Library.Business/Library.Business.csproj" />
+  </Folder>
+  <Folder Name="/src/03. Repositories/">
+    <Project Path="LibraryRepositories/Library.Repositories.csproj" />
+  </Folder>
   <Folder Name="/src/04. Infraestructure/">
     <Project Path="Library.DataAccess/Library.DataAccess.csproj" />
   </Folder>
-  <Folder Name="/src/05. Common/" />
+  <Folder Name="/src/05. Common/">
+    <Project Path="Library.Common/Library.Common.csproj" />
+  </Folder>
 </Solution>

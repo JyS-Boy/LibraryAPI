@@ -24,11 +24,6 @@ namespace Library.DataAccess.Configurations
 
             builder.HasIndex(r => r.Email)
                 .IsUnique();
-
-            builder.HasOne(r => r.User)
-                .WithOne()
-                .HasForeignKey<Reader>(r => r.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
