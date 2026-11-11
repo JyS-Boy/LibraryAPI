@@ -18,7 +18,7 @@ namespace LibraryAPI.Endpoints
                 return Results.Ok(result.Value);
             })
                 .WithName("Login")
-                .WithSummary("Endpoint que permite a un usuario iniciar sesión")
+                .WithSummary("Permite iniciar sesión y generar un JWT")
                 .Produces<Result>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status400BadRequest);
 

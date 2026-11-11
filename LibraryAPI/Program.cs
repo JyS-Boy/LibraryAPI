@@ -1,10 +1,16 @@
 using Library.Business;
+using Library.DataAccess;
 using Library.Repositories;
+using LibraryAPI.Endpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<LibraryDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("LibraryDb")));
 
 var jwtKey =
     builder.Configuration["Jwt:Key"];
@@ -43,6 +49,14 @@ var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapGroup("/api/users")
+    .MapUserEndpoints()
+    .WithTags("Users");
+
+app.MapGroup("/api/auth")
+    .MapAuthEndpoints()
+    .WithTags("Auth");
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -50,8 +64,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
 
 app.MapControllers();
 

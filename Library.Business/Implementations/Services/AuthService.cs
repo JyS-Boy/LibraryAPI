@@ -20,7 +20,7 @@ namespace Library.Business.Implementations.Services
         public async Task<Result<TokenResponse>> LoginAsync(LoginRequest request)
         {
             // Validación de credenciales
-            var user = await _userRepository.GetByPredicateAsync(p => p.UserName == request.UserName);
+            var user = await _userRepository.GetByUserNameAsync(request.UserName);
             if (user is null)
                 return Result.Failure<TokenResponse>("Usuario no encontrado.");
 
