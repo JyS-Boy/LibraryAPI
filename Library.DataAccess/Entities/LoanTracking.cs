@@ -15,9 +15,16 @@ namespace Library.DataAccess.Entities
         public LoanTracking()
         {
         }
+        public LoanTracking( Loan loan, StatusLoan status)
+        {
+            LoanId = loan.Id;
+            Loan = loan;
+            DueStatus = DateTime.UtcNow;
+            Status = status;
+        }
+
         public LoanTracking(StatusLoan status)
         {
-    
             DueStatus = DateTime.UtcNow;
             Status = status;
         }

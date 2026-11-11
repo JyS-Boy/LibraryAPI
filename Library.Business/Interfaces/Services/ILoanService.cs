@@ -6,15 +6,9 @@ namespace Library.Business.Interfaces.Services
 {
     public interface ILoanService
     {
-        Task<Result> CreateAsync(
-            CreateLoanRequest request);
-
-        Task<Result<GetLoanResponse>>
-            GetByIdAsync(Guid id);
-
-        Task<Result<List<ListLoansResponse>>>
-            GetAllAsync();
-
+        Task<Result> CreateAsync(CreateLoanRequest request);
+        Task<Result<GetLoanResponse>> GetByIdAsync(Guid id);
+        Task<Result<List<ListLoansResponse>>> GetAllAsync();
         Task<Result> ReturnLoanAsync(Guid id);
     }
 }

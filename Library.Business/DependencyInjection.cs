@@ -13,8 +13,7 @@ namespace Library.Business
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IReaderService, ReaderService>();
-            // Se implementarán más adelante
-            //services.AddScoped<ILoanService, LoanService>();
+            services.AddScoped<ILoanService, LoanService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserService, UserService>();

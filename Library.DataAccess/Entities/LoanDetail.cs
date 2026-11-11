@@ -14,7 +14,13 @@ namespace Library.DataAccess.Entities
         public LoanDetail()
         {
         }
-        public LoanDetail(Loan loan, Book book, int quantity)
+        public LoanDetail(Book book, int quantity)
+        {
+            BookId = book.Id;
+            Book = book;
+            Quantity = quantity;
+        }
+        public LoanDetail( Loan loan, Book book, int quantity)
         {
             LoanId = loan.Id;
             Loan = loan;

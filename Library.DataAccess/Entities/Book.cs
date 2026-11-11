@@ -29,5 +29,25 @@ namespace Library.DataAccess.Entities
             Category = category;
             CategoryId = category.Id;
         }
+        public void DecreaseStock(int quantity)
+        {
+            if (quantity <= 0)
+            {
+                throw new ArgumentException("Cantidad debe ser mayor que cero.", nameof(quantity));
+            }
+            if (Stock < quantity)
+            {
+                throw new InvalidOperationException("Stock insuficiente para disminuir.");
+            }
+            Stock -= quantity;
+        }
+        public void IncreaseStock(int quantity)
+        {
+            if (quantity <= 0)
+            {
+                throw new ArgumentException("Cantidad debe ser mayor que cero.", nameof(quantity));
+            }
+            Stock += quantity;
+        }
     }
 }

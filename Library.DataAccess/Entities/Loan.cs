@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library.DataAccess.Emuns;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -26,6 +27,24 @@ namespace Library.DataAccess.Entities
             ExpectedReturnDate = expectedReturnDate;
             Details = details;
             Tracking = tracking;
+        }
+
+        public void AddTracking(LoanTracking tracking)
+        {
+            Tracking.Add(tracking);
+        }
+        public void AddDetail(LoanDetail detail)
+        {
+            Details.Add(detail);
+        }
+
+        public bool IsReturned()
+        {
+            return Tracking.Any(x => x.Status == StatusLoan.Returned);
+        }
+        public void ReturnLoan()
+        {
+            Tracking.Add(new LoanTracking(StatusLoan.Returned));
         }
     }
 }
