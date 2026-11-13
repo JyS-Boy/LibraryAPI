@@ -90,13 +90,52 @@ namespace Library.Business.Implementations.Services
         }
 
 
-        public Task<Result<GetLoanResponse>> GetByIdAsync(Guid id)
+        public async Task<Result<GetLoanResponse>> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var loan = await _loanRepository.GetLoanByIdAsync(id);
+
+            if (loan is null)
+            {
+                return Result.Failure<GetLoanResponse>($"Préstamo con id {id} no encontrado.");
+            }
+
+            var status =
+                loan.Tracking
+                    .OrderByDescending(x => x.DueStatus)
+                    .First()
+                    .Status
+                    .ToString();
+
+            return Result.Success(
+                new GetLoanResponse
+                {
+                    Id = loan.Id,
+                    Reader = loan.Reader?.FullName ?? "",
+                    Librarian = loan.Librarian,
+                    LoanDate = loan.LoanDate,
+                    ExpectedReturnDate = loan.ExpectedReturnDate,
+                    Status = status
+                });
         }
-        public Task<Result<List<ListLoansResponse>>> GetAllAsync()
+
+        public async Task<Result<List<ListLoansResponse>>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var loans = await _loanRepository.GetAllLoansAsync();
+
+            var response = loans.Select(x =>
+                    new ListLoansResponse
+                    {
+                        Id = x.Id,
+                        Reader = x.Reader?.FullName ?? "",
+                        LoanDate = x.LoanDate,
+                        Status = x.Tracking
+                            .OrderByDescending(t => t.DueStatus)
+                            .First()
+                            .Status
+                            .ToString()
+                    }).ToList();
+
+            return Result.Success(response);
         }
         public async Task<Result> ReturnLoanAsync(Guid id)
         {
@@ -125,9 +164,9 @@ namespace Library.Business.Implementations.Services
                 await _bookRepository.UpdateAsync(detail.Book);
             }
 
-            loan.AddTracking(new LoanTracking(StatusLoan.Returned));
+            var tracking = new LoanTracking(loan, StatusLoan.Returned);
 
-            await _loanRepository.UpdateAsync(loan);
+            await _loanRepository.AddTrackingAsync(tracking);
 
             return Result.Success("Préstamo devuelto correctamente.");
         }

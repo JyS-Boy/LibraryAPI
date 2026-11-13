@@ -27,36 +27,22 @@ namespace Library.Business.Implementations.Services
             return Result.Success();
         }
 
-        public async Task<Result<GetAuthorResponse>>
-            GetByIdAsync(Guid id)
+        public async Task<Result<GetAuthorResponse>> GetByIdAsync(Guid id)
         {
-            var result = await _repository
-                .GetByIdAsync(id);
+            var result = await _repository.GetByIdAsync(id);
 
             if (result is null)
-            {
-                return Result
-                    .Failure<GetAuthorResponse>(
-                        $"Author with id {id} not found.");
-            }
+                return Result.Failure<GetAuthorResponse>($"Autor con id {id} no encontrado.");
 
-            return Result
-                .Success(
-                    result.Adapt<GetAuthorResponse>());
+            return Result.Success(result.Adapt<GetAuthorResponse>());
         }
 
-        public async Task<Result> UpdateAsync(
-            Guid id,
-            UpdateAuthorRequest request)
+        public async Task<Result> UpdateAsync(Guid id, UpdateAuthorRequest request)
         {
-            var result = await _repository
-                .GetByIdAsync(id);
+            var result = await _repository.GetByIdAsync(id);
 
             if (result is null)
-            {
-                return Result.Failure(
-                    $"Author with id {id} not found.");
-            }
+                return Result.Failure($"Autor con id {id} no encontrado.");
 
             request.Adapt(result);
 
@@ -65,67 +51,41 @@ namespace Library.Business.Implementations.Services
             return Result.Success();
         }
 
-        public async Task<Result> DeleteAsync(
-            Guid id)
+        public async Task<Result> DeleteAsync(Guid id)
         {
-            var result = await _repository
-                .GetByIdAsync(id);
+            var result = await _repository.GetByIdAsync(id);
 
             if (result is null)
-            {
-                return Result.Failure(
-                    $"Author with id {id} not found.");
-            }
+                return Result.Failure($"Autor con id {id} no encontrado.");
 
             await _repository.DeleteAsync(id);
 
             return Result.Success();
         }
 
-        public async Task<
-            Result<PagedResponse<ListAuthorsResponse>>
-        > ListAsync(
-            PagedRequest request)
+        public async Task<Result<PagedResponse<ListAuthorsResponse>>> ListAsync(PagedRequest request)
         {
-            var response =
-                new PagedResponse<ListAuthorsResponse>();
+            var response = new PagedResponse<ListAuthorsResponse>();
 
-            var result =
-                await _repository.ListAsync(
-                    predicate: a =>
+            var result = await _repository.ListAsync(predicate: a =>
                         a.IsActive &&
-                        (
-                            string.IsNullOrEmpty(
-                                request.Filter)
-                            ||
-                            a.Name.Contains(
-                                request.Filter)
-                            ||
-                            a.Country.Contains(
-                                request.Filter)
+                        (string.IsNullOrEmpty(request.Filter)
+                            || a.Name.Contains(request.Filter)
+                            || a.Country.Contains(request.Filter)
                         ),
-                    selector: a =>
-                        a.Adapt<ListAuthorsResponse>(),
+                    selector: a => a.Adapt<ListAuthorsResponse>(),
                     orderBy: a => a.Name,
-                    pageNumber:
-                        request.PageNumber,
-                    pageSize:
-                        request.PageSize
+                    pageNumber: request.PageNumber,
+                    pageSize: request.PageSize
                 );
 
-            response.Collection =
-                result.Result.ToList();
+            response.Collection = result.Result.ToList();
 
-            response.TotalCount =
-                result.TotalCount;
+            response.TotalCount = result.TotalCount;
 
-            response.TotalRowsPerPage =
-                result.Result.Count;
+            response.TotalRowsPerPage = result.Result.Count;
 
-            response.TotalPages =
-                (int)Math.Ceiling(
-                    (double)result.TotalCount /
-                    request.PageSize);
+            response.TotalPages = (int)Math.Ceiling((double)result.TotalCount / request.PageSize);
 
             return Result.Success(response);
         }

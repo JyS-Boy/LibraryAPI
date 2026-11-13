@@ -8,15 +8,8 @@ namespace Library.Business.Interfaces.Services;
 public interface IAuthorService
 {
     Task<Result> CreateAsync(CreateAuthorRequest request);
-
     Task<Result<GetAuthorResponse>> GetByIdAsync(Guid id);
-
-    Task<Result> UpdateAsync(
-        Guid id,
-        UpdateAuthorRequest request);
-
+    Task<Result> UpdateAsync(Guid id, UpdateAuthorRequest request);
     Task<Result> DeleteAsync(Guid id);
-
-    Task<Result<PagedResponse<ListAuthorsResponse>>>
-        ListAsync(PagedRequest request);
+    Task<Result<PagedResponse<ListAuthorsResponse>>> ListAsync(PagedRequest request);
 }

@@ -21,9 +21,26 @@ public class LoanRepository : BaseRepository<Loan>, ILoanRepository
     public async Task<Loan?> GetLoanByIdAsync(Guid id)
     {
         return await _context.Set<Loan>()
+            .Include(x => x.Reader)
             .Include(x => x.Details)
                 .ThenInclude(x => x.Book)
             .Include(x => x.Tracking)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
+
+    public async Task<List<Loan>> GetAllLoansAsync()
+    {
+        return await _context.Set<Loan>()
+            .Include(x => x.Reader)
+            .Include(x => x.Tracking)
+            .ToListAsync();
+    }
+
+    public async Task AddTrackingAsync(LoanTracking tracking)
+    {
+        await _context.Set<LoanTracking>().AddAsync(tracking);
+
+        await _context.SaveChangesAsync();
+    }
+
 }

@@ -44,7 +44,7 @@ namespace Library.DataAccess.Entities
         }
         public void ReturnLoan()
         {
-            Tracking.Add(new LoanTracking(StatusLoan.Returned));
+            Tracking.Add(new LoanTracking(this, StatusLoan.Returned));
         }
     }
 }

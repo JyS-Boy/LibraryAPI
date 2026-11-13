@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Library.DataAccess.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20261104202840_Initial")]
+    [Migration("20261113142408_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -279,57 +279,6 @@ namespace Library.DataAccess.Migrations
                     b.ToTable("LoanTracking");
                 });
 
-            modelBuilder.Entity("Library.DataAccess.Entities.Reader", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("Reader");
-                });
-
             modelBuilder.Entity("Library.DataAccess.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -375,6 +324,51 @@ namespace Library.DataAccess.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("Reader", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.ToTable("Reader");
+                });
+
             modelBuilder.Entity("Library.DataAccess.Entities.Book", b =>
                 {
                     b.HasOne("Library.DataAccess.Entities.Author", "Author")
@@ -396,7 +390,7 @@ namespace Library.DataAccess.Migrations
 
             modelBuilder.Entity("Library.DataAccess.Entities.Loan", b =>
                 {
-                    b.HasOne("Library.DataAccess.Entities.Reader", "Reader")
+                    b.HasOne("Reader", "Reader")
                         .WithMany("Loans")
                         .HasForeignKey("ReaderId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -435,17 +429,6 @@ namespace Library.DataAccess.Migrations
                     b.Navigation("Loan");
                 });
 
-            modelBuilder.Entity("Library.DataAccess.Entities.Reader", b =>
-                {
-                    b.HasOne("Library.DataAccess.Entities.User", "User")
-                        .WithOne()
-                        .HasForeignKey("Library.DataAccess.Entities.Reader", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Library.DataAccess.Entities.Author", b =>
                 {
                     b.Navigation("Books");
@@ -468,7 +451,7 @@ namespace Library.DataAccess.Migrations
                     b.Navigation("Tracking");
                 });
 
-            modelBuilder.Entity("Library.DataAccess.Entities.Reader", b =>
+            modelBuilder.Entity("Reader", b =>
                 {
                     b.Navigation("Loans");
                 });

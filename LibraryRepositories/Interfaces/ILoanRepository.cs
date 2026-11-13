@@ -6,5 +6,7 @@ namespace Library.Repositories.Interfaces
     {
         Task<Loan>CreateLoanAsync(Loan loan);
         Task<Loan?> GetLoanByIdAsync(Guid id);
+        Task<List<Loan>> GetAllLoansAsync();
+        Task AddTrackingAsync(LoanTracking tracking);
     }
 }

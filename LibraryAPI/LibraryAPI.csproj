@@ -21,4 +21,8 @@
     <ProjectReference Include="..\LibraryRepositories\Library.Repositories.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="docs\pruebas\" />
+  </ItemGroup>
+
 </Project>

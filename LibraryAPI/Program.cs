@@ -6,14 +6,14 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using LibraryAPI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<LibraryDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("LibraryDb")));
 
-var jwtKey =
-    builder.Configuration["Jwt:Key"];
+var jwtKey = builder.Configuration["Jwt:Key"];
 
 builder.Services
     .AddAuthentication(
@@ -26,7 +26,6 @@ builder.Services
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-
                 ValidIssuer = builder.Configuration["Jwt:Issuer"],
                 ValidAudience = builder.Configuration["Jwt:Audience"],
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey!))
@@ -49,19 +48,21 @@ var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapGroup("/api/users")
-    .MapUserEndpoints()
-    .WithTags("Users");
-
-app.MapGroup("/api/auth")
-    .MapAuthEndpoints()
-    .WithTags("Auth");
+app.MapGroup("/api/users").MapUserEndpoints().WithTags("Users");
+app.MapGroup("/api/auth").MapAuthEndpoints().WithTags("Auth");
+app.MapGroup("/api/loans").MapLoanEndpoints().WithTags("Loans");
+app.MapGroup("/api/authors").MapAuthorEndpoints().WithTags("Authors");
+app.MapGroup("/api/categories").MapCategoryEndpoints().WithTags("Categories");
+app.MapGroup("/api/books").MapBookEndpoints().WithTags("Books");
+app.MapGroup("/api/readers").MapReaderEndpoints().WithTags("Readers");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 
